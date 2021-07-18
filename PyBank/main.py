@@ -1,78 +1,68 @@
-#Importing correct modules
+#Import modules
 import os
 import csv
 
-#Creating an object out of the CSV file
-budget_data = os.path.join("PyBank","Resources","budget_data.csv")
+#Create lists
+months = []
+profit_loss = []
 
-total_months = 0
-net_change = 0
-value = 0
-change = 0
-dates = []
-profits = []
+#Set path 
+budget_csv = os.path.join('budget_data.csv')
 
-#Ready CSV file for use
-with open(budget_data, newline = "") as csvfile:
-    csvreader = csv.reader(csvfile, delimiter = ",")
+#Open CSV
+with open(budget_csv, newline="") as csvfile:
+    budget_reader = csv.reader(csvfile, delimiter=",")
 
-    #Reading the header row
-    csv_header = next(csvreader)
+    #Skip the header
+    next(budget_reader)
 
-    #Read first row
-    first_row = next(csvreader)
-    total_months += 1
-    net_change += int(first_row[1])
-    value = int(first_row[1])
-    
-    #Loop through each row
-    for row in csvreader:
-        
-        # Keeping track of the dates
-        dates.append(row[0])
-        
-        # Calculate the change
-        change = int(row[1])-value
-        profits.append(change)
-        value = int(row[1])
-        
-        #Total number of months
-        total_months += 1
+    #Loop CSV file
+    for row in budget_reader:
 
-        #Total net change
-        net_change = net_change + int(row[1])
+        #Add date
+        months.append(row[0])
 
-    #Greatest increase in profits
-    greatest_increase = max(profits)
-    greatest_index = profits.index(greatest_increase)
-    greatest_date = dates[greatest_index]
+        #Add Profit/Loss
+        profit_loss.append(float(row[1]))
 
-    #Greatest decrease (lowest increase) in profits 
-    greatest_decrease = min(profits)
-    worst_index = profits.index(greatest_decrease)
-    worst_date = dates[worst_index]
+#Calculate total months 
+total_months = (len(months))
 
-    #Average change in "Profit/Losses between months over entire period"
-    avg_change = sum(profits)/len(profits)
-    
-#Displaying information
-print("Financial Analysis")
-print("---------------------")
-print(f"Total Months: {str(total_months)}")
-print(f"Total: ${str(net_change)}")
-print(f"Average Change: ${str(round(avg_change,2))}")
-print(f"Greatest Increase in Profits: {greatest_date} (${str(greatest_increase)})")
-print(f"Greatest Decrease in Profits: {worst_date} (${str(greatest_decrease)})")
+#Calculate the net amount
+net_amount = sum(profit_loss)
 
-#Send to .txt file
-output = open("Financial Analysis.txt", "w")
+#Calculate the average change
+avg_change = net_amount / total_months
 
-line1 = "Financial Analysis"
-line2 = "---------------------"
-line3 = str(f"Total Months: {str(total_months)}")
-line4 = str(f"Total: ${str(net_change)}")
-line5 = str(f"Average Change: ${str(round(avg_change,2))}")
-line6 = str(f"Greatest Increase in Profits: {greatest_date} (${str(greatest_increase)})")
-line7 = str(f"Greatest Decrease in Profits: {worst_date} (${str(greatest_decrease)})")
-output.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(line1,line2,line3,line4,line5,line6,line7))
+#Calculate the greatest increase
+max_profit = max(profit_loss)
+
+#Using the index of the greatest increase
+index_max = profit_loss.index(max_profit)
+max_month = months[index_max]
+
+#Calculate the greatest decrease
+min_profit = min(profit_loss)
+
+#Find Date
+index_min = profit_loss.index(min_profit)
+min_month = months[index_min]
+
+financial_analysis = (f'''Financial Analysis
+----------------------------------
+Total Months: {total_months}
+Total: ${net_amount:.2f}
+Average Change: {avg_change:.2f}
+Greatest Increase in Profits: {max_month} {max_profit:.2f}
+Greatest Decrease in Profits: {min_month} {min_profit:.2f}''')
+
+#Print out analysis
+print(financial_analysis)
+
+#Create a .txt file containing the same analysis in the print out
+analysis = open('financial_analysis.txt', 'w')
+
+analysis.write(financial_analysis)
+
+analysis.close()
 
