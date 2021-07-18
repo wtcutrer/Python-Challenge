@@ -1,1 +1,1 @@
-Print("PyPoll HW")
+print("PyPoll HW")
