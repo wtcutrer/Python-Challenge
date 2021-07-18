@@ -1,9 +1,6 @@
 # Python-Challenge
 Module 3- Pye Me Up Charlie 
 
-# Python_Challenge
-HW3 - Pye Me Up Charlie 
-
 ## Breakdown
 In this Assignment, a Python script was created in order to analyze two different csv's. The two csv's contained banking and voting data that was provided by the instructor. Both of these challenges encompass real-world situations that programmers face everyday. The folders for each challenge contain the script used, a resource folder that contains the csv, and an analysis folder that contains the text file that has the results from the analysis. Instructions for this assignment are provided below.
 
