@@ -2,26 +2,21 @@
 import os
 import csv
 
-#Open path
+#Set Path for input and output of poll data
 voter_csv = os.path.join('Resources','election_data.csv')
+file_output = "Vote Analysis.txt"
 
-#Create dictionary to store vote count
+#Set Variables 
 vote_count = {}
-
-#Create dictionary to store vote percentage
 vote_per = {}
-
-#Create a variable to hold the total vote count
 vote_total = 0
 
 with open(voter_csv, newline="") as csvfile:
-    voterreader = csv.reader(csvfile, delimiter=",")
+    vote_reader = csv.reader(csvfile, delimiter=",")
+    next(vote_reader)
 
-    #Skip header row
-    next(voterreader)
-
-    #Loop
-    for row in voterreader:
+    #Loop through CSV
+    for row in vote_reader:
 
         #Count total votes
         vote_total += 1
@@ -30,11 +25,11 @@ with open(voter_csv, newline="") as csvfile:
         if row[2] in vote_count:
             vote_count[row[2]] += 1
 
-         #If the candidate does not exist in the dictionary add them and set value as 1
+         #Add Candidate and set value if needed
         else:
             vote_count[row[2]] = 1
 
-#Create a variable to hold the winner vote count
+#Variable to set bucket for winner
 winner_count = 0
 
 #Loop through vote_count dictionary to calculate the vote percentage and to determine the winner
@@ -48,10 +43,8 @@ for candidate in vote_count:
         winner_count = vote_count[candidate]
         winner = candidate
 
-#Print out the results while writing them to a text file
-results_path = os.path.join('Election Results.txt')
-
-with open(results_path, 'w', newline="") as txtfile:
+#Write text file with results
+with open(file_output, 'w', newline="") as txtfile:
 
     txtfile.write(f'''
 Election Results
